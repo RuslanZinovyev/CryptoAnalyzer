@@ -4,20 +4,12 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 public class ReadService {
-    private static ReadService INSTANCE;
     private final File inputFile;
     private final StringBuilder stringBuilder;
 
-    private ReadService(File inputFile) {
+    public ReadService(File inputFile) {
         this.inputFile = inputFile;
         stringBuilder = new StringBuilder();
-    }
-
-    public static ReadService getInstance(File inputFile) {
-        if (INSTANCE == null) {
-            INSTANCE = new ReadService(inputFile);
-        }
-        return INSTANCE;
     }
 
     public StringBuilder readFile() {

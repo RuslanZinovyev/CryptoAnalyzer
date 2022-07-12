@@ -3,10 +3,10 @@ package commands;
 import model.Result;
 import services.WriteService;
 
-public class WriteFileCommand implements Command {
+public class WriteCommand implements Command {
     private final WriteService writeService;
 
-    public WriteFileCommand(WriteService writeService) {
+    public WriteCommand(WriteService writeService) {
         this.writeService = writeService;
     }
 

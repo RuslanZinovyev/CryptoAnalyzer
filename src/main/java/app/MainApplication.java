@@ -1,74 +1,134 @@
 package app;
 
-import commands.BruteForceCommand;
-import commands.DecryptorCommand;
-import commands.EncryptorCommand;
-import controllers.CaesarController;
+import commands.DecryptCommand;
+import commands.EncryptCommand;
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import model.Parameter;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
-public class MainApplication {
-    private final static String HEADER = "Hello, this is the Caesar Cipher application \nPlease choose the operation: \n\n";
-    private final static String TEXT_ENCRYPTION_WITH_KEY = "1: Encrypt file with the key \n";
-    private final static String TEXT_DECRYPTION_WITH_KEY = "2: Decrypt file with the key \n";
-    private final static String TEXT_DECRYPTION_BRUTE_FORCE = "3: Brute force analyzer \n";
-    private final static String TEXT_DECRYPTION_STATIC_CODE_ANALYZER = "4: Static key analyzer \n";
-    private final static String EXIT = "5: Exit application";
+public class MainApplication extends Application {
+
+    public static final String CRYPTO_ANALYZER = "Crypto Analyzer";
+    private static final String DOWNLOAD_FILE = "Download File";
+    private static final String UPLOAD_FILE = "Upload File";
+    private static final String ENCRYPT = "Encrypt";
+    private static final String DECRYPT = "Decrypt";
+    private static final String APPLY = "Apply";
+    private static final String CLEAR = "Clear";
+    private static final String OPERATIONS = "Operations";
+    private int secureKey = 0;
+    private File inputFile;
+    private File outputFile;
+
+    @Override
+    public void start(Stage stage) {
+        stage.setTitle(CRYPTO_ANALYZER);
+
+        MenuItem download = new MenuItem(DOWNLOAD_FILE);
+        MenuItem upload = new MenuItem(UPLOAD_FILE);
+
+        Button encrypt = new Button(ENCRYPT);
+        Button decrypt = new Button(DECRYPT);
+        Button key = new Button(APPLY);
+        Button clear = new Button(CLEAR);
+
+        FileChooser fileChooser = new FileChooser();
+
+        MenuButton menuButton = new MenuButton(OPERATIONS, null, download, upload);
+        TextArea textArea = new TextArea();
+        TextField textField = new TextField();
+
+        VBox vBox = new VBox(20, menuButton, encrypt, decrypt, textField, key, clear);
+
+        HBox hBox = new HBox();
+        hBox.getChildren().addAll(vBox, textArea);
+        HBox.setMargin(vBox, new Insets(10, 10, 10, 10));
+
+        Scene scene = new Scene(hBox, 600, 800);
+        stage.setScene(scene);
+        stage.show();
+
+        /*
+         Button actions
+         */
+        key.setOnAction(e -> secureKey = Integer.parseInt(textField.getText()));
+
+        clear.setOnAction(e -> {
+            textArea.clear();
+            textField.clear();
+            secureKey = 0;
+        });
+
+        download.setOnAction(event -> {
+            textArea.clear();
+            inputFile = fileChooser.showOpenDialog(stage);
+            try (Scanner scanner = new Scanner(inputFile)) {
+                while (scanner.hasNext()) {
+                    textArea.appendText(scanner.nextLine());
+                    textArea.appendText("\n");
+                    textArea.setWrapText(true);
+                }
+            } catch (FileNotFoundException exc) {
+                exc.printStackTrace();
+            }
+        });
+
+        upload.setOnAction( event -> {
+            // Set extension filter for text files
+            FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+            fileChooser.getExtensionFilters().add(extensionFilter);
+            // Show save file dialog
+            outputFile = fileChooser.showSaveDialog(stage);
+        });
+
+        encrypt.setOnAction(event -> {
+            Parameter parameter = new Parameter(inputFile.getAbsolutePath(), outputFile.getAbsolutePath(), secureKey);
+            EncryptCommand encryptCommand = new EncryptCommand(parameter);
+            encryptCommand.execute();
+            textArea.clear();
+            if (outputFile.exists()) {
+                try (Scanner scanner = new Scanner(outputFile)) {
+                    while (scanner.hasNext()) {
+                        textArea.appendText(scanner.nextLine());
+                        textArea.appendText("\n");
+                        textArea.setWrapText(true);
+                    }
+                } catch (FileNotFoundException exc) {
+                    exc.printStackTrace();
+                }
+            }
+        });
+
+        decrypt.setOnAction(event -> {
+            Parameter parameter = new Parameter(inputFile.getAbsolutePath(), outputFile.getAbsolutePath(), secureKey);
+            DecryptCommand decryptCommand = new DecryptCommand(parameter);
+            decryptCommand.execute();
+            textArea.clear();
+            if (outputFile.exists()) {
+                try (Scanner scanner = new Scanner(outputFile)) {
+                    while (scanner.hasNext()) {
+                        textArea.appendText(scanner.nextLine());
+                        textArea.appendText("\n");
+                        textArea.setWrapText(true);
+                    }
+                } catch (FileNotFoundException exc) {
+                    exc.printStackTrace();
+                }
+            }
+        });
+    }
 
     public static void main(String[] args) {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        CaesarController controller = new CaesarController();
-        System.out.println(
-                HEADER +
-                        TEXT_ENCRYPTION_WITH_KEY +
-                        TEXT_DECRYPTION_WITH_KEY +
-                        TEXT_DECRYPTION_BRUTE_FORCE +
-                        TEXT_DECRYPTION_STATIC_CODE_ANALYZER +
-                        EXIT
-        );
-
-        try {
-            String entry = reader.readLine();
-            int key;
-            switch (entry) {
-                case "1", "2" -> {
-                    System.out.println("Please specify the path and name for the source file");
-                    String inputPath = reader.readLine();
-                    System.out.println("Please specify where to save the result file");
-                    String outputPath = reader.readLine();
-                    System.out.println("Please specify the security key");
-                    key = Integer.parseInt(reader.readLine());
-                    Parameter parameter = new Parameter(inputPath, outputPath, key);
-
-                    switch (entry) {
-                        case "1" -> {
-                            EncryptorCommand encryptorCommand = new EncryptorCommand(parameter);
-                            controller.runCommand(encryptorCommand);
-                        }
-                        case "2" -> {
-                            DecryptorCommand decryptorCommand = new DecryptorCommand(parameter);
-                            controller.runCommand(decryptorCommand);
-                        }
-                    }
-                }
-                case "3" -> {
-                    System.out.println("Please specify the path to decrypted text");
-                    String inputPath = reader.readLine();
-                    Parameter parameter = new Parameter(inputPath);
-                    BruteForceCommand bruteForceCommand = new BruteForceCommand(parameter);
-                    int securityKey = controller.runCommand(bruteForceCommand).getSecurityKey();
-                    System.out.println(securityKey);
-                }
-                case "4" -> {
-                }
-                case "5" -> System.exit(0);
-                default -> System.out.println("Please specify correct number");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        launch();
     }
 }

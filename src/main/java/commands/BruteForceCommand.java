@@ -10,7 +10,7 @@ public class BruteForceCommand implements Command {
 
     public BruteForceCommand(Parameter parameter) {
         this.parameter = parameter;
-        this.bruteForceService = BruteForceService.getInstance(parameter.getInput());
+        this.bruteForceService = new BruteForceService(parameter.getInput());
     }
 
     @Override

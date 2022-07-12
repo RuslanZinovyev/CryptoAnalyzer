@@ -51,6 +51,8 @@ public class AlphabetUtil {
         encryptMap.put(':', 38);
         encryptMap.put('"', 39);
         encryptMap.put('!', 40);
+        encryptMap.put('«', 41);
+        encryptMap.put('»', 42);
 
         decryptMap.put(0, 'а');
         decryptMap.put(1, 'б');
@@ -93,5 +95,7 @@ public class AlphabetUtil {
         decryptMap.put(38, ':');
         decryptMap.put(39, '"');
         decryptMap.put(40, '!');
+        decryptMap.put(41, '«');
+        decryptMap.put(42, '»');
     }
 }
