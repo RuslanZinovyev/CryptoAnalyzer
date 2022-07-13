@@ -7,31 +7,16 @@ import static utils.AlphabetUtil.decryptMap;
 import static utils.AlphabetUtil.encryptMap;
 
 public class DecryptionService {
-    private static DecryptionService INSTANCE;
     private int securityKey;
     private final StringBuilder textBuilder;
 
-    private DecryptionService(StringBuilder textBuilder) {
+    public DecryptionService(StringBuilder textBuilder) {
         this.textBuilder = textBuilder;
     }
 
-    private DecryptionService(int securityKey, StringBuilder textBuilder) {
+    public DecryptionService(int securityKey, StringBuilder textBuilder) {
         this.securityKey = securityKey;
         this.textBuilder = textBuilder;
-    }
-
-    public static DecryptionService getInstance(StringBuilder builder) {
-        if (INSTANCE == null) {
-            INSTANCE = new DecryptionService(builder);
-        }
-        return INSTANCE;
-    }
-
-    public static DecryptionService getInstance(int securityKey, StringBuilder builder) {
-        if (INSTANCE == null) {
-            INSTANCE = new DecryptionService(securityKey, builder);
-        }
-        return INSTANCE;
     }
 
     public void setSecurityKey(int securityKey) {

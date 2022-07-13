@@ -7,20 +7,12 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 public class WriteService {
-    private static WriteService INSTANCE;
-    private static File outputFile;
-    private static StringBuilder builder;
+    private final File outputFile;
+    private final StringBuilder builder;
 
-    private WriteService(File outputFile, StringBuilder builder) {
+    public WriteService(File outputFile, StringBuilder builder) {
         this.outputFile = outputFile;
         this.builder = builder;
-    }
-
-    public static WriteService getInstance(File outputFile, StringBuilder builder) {
-        if (INSTANCE == null) {
-            INSTANCE = new WriteService(outputFile, builder);
-        }
-        return INSTANCE;
     }
 
     public File getOutputFile() {

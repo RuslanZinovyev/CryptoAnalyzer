@@ -5,24 +5,15 @@ import utils.AlphabetUtil;
 import java.io.File;
 
 public class BruteForceService {
-    private static BruteForceService INSTANCE;
     private final ReadService readService;
 
-    private BruteForceService(File inputFile) {
-        readService = ReadService.getInstance(inputFile);
+    public BruteForceService(File inputFile) {
+        readService = new ReadService(inputFile);
     }
-
-    public static BruteForceService getInstance(File inputFile) {
-        if (INSTANCE == null) {
-            INSTANCE = new BruteForceService(inputFile);
-        }
-        return INSTANCE;
-    }
-
 
     public int analyzeByBruteForce() {
         StringBuilder decryptedFile = readService.readFile();
-        DecryptionService decryptionService = DecryptionService.getInstance(decryptedFile);
+        DecryptionService decryptionService = new DecryptionService(decryptedFile);
         for (int i = 0; i < AlphabetUtil.encryptMap.size(); i++) {
             decryptionService.setSecurityKey(i);
             StringBuilder decryptedText = decryptionService.decryptText();

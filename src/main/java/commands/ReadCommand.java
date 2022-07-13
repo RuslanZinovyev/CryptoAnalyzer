@@ -3,10 +3,10 @@ package commands;
 import model.Result;
 import services.ReadService;
 
-public class ReadFileCommand implements Command {
+public class ReadCommand implements Command {
     private final ReadService readService;
 
-    public ReadFileCommand(ReadService readService) {
+    public ReadCommand(ReadService readService) {
         this.readService = readService;
     }
 
