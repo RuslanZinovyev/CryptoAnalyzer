@@ -54,7 +54,8 @@ public class BruteForceService {
         int count = 0;
         for (String s : array) {
             if (s.contains(" ")) {
-                count++;
+                String[] arr = s.split(" ");
+                count += arr.length - 1;
             }
         }
         return count < array.length;

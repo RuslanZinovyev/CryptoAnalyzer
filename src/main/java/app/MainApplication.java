@@ -1,5 +1,6 @@
 package app;
 
+import commands.BruteForceCommand;
 import commands.DecryptCommand;
 import commands.EncryptCommand;
 import javafx.application.Application;
@@ -11,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.Parameter;
+import model.Result;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,6 +25,7 @@ public class MainApplication extends Application {
     private static final String UPLOAD_FILE = "Upload File";
     private static final String ENCRYPT = "Encrypt";
     private static final String DECRYPT = "Decrypt";
+    private static final String BRUTE_FORCE_ANALYZER = "Brute Force key analyzer";
     private static final String APPLY = "Apply";
     private static final String CLEAR = "Clear";
     private static final String OPERATIONS = "Operations";
@@ -39,6 +42,7 @@ public class MainApplication extends Application {
 
         Button encrypt = new Button(ENCRYPT);
         Button decrypt = new Button(DECRYPT);
+        Button bruteForce = new Button(BRUTE_FORCE_ANALYZER);
         Button key = new Button(APPLY);
         Button clear = new Button(CLEAR);
 
@@ -48,7 +52,7 @@ public class MainApplication extends Application {
         TextArea textArea = new TextArea();
         TextField textField = new TextField();
 
-        VBox vBox = new VBox(20, menuButton, encrypt, decrypt, textField, key, clear);
+        VBox vBox = new VBox(20, menuButton, encrypt, decrypt, bruteForce, textField, key, clear);
 
         HBox hBox = new HBox();
         hBox.getChildren().addAll(vBox, textArea);
@@ -124,6 +128,15 @@ public class MainApplication extends Application {
                 } catch (FileNotFoundException exc) {
                     exc.printStackTrace();
                 }
+            }
+        });
+
+        bruteForce.setOnAction(event -> {
+            Parameter parameter = new Parameter(inputFile.getAbsolutePath());
+            BruteForceCommand bruteForceCommand = new BruteForceCommand(parameter);
+            Result result = bruteForceCommand.execute();
+            if (result != null) {
+                textField.appendText(String.valueOf(result.getSecurityKey()));
             }
         });
     }
