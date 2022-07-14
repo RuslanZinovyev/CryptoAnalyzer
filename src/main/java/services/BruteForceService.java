@@ -27,7 +27,6 @@ public class BruteForceService {
     /**
      * Validators
      */
-
     private boolean doesNotContainLongWords(StringBuilder decryptedText) {
         String[] array = decryptedText.toString().split(" ");
         for (String s : array) {

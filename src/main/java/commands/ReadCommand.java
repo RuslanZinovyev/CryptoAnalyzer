@@ -12,7 +12,7 @@ public class ReadCommand implements Command {
 
     @Override
     public Result execute() {
-         readService.readFile().toString();
+         readService.readFile();
          return new Result("");
     }
 }

@@ -1,5 +1,6 @@
 package app;
 
+import commands.AnalyzeCommand;
 import commands.BruteForceCommand;
 import commands.DecryptCommand;
 import commands.EncryptCommand;
@@ -26,6 +27,7 @@ public class MainApplication extends Application {
     private static final String ENCRYPT = "Encrypt";
     private static final String DECRYPT = "Decrypt";
     private static final String BRUTE_FORCE_ANALYZER = "Brute Force key analyzer";
+    private static final String ANALYZE = "Analyze";
     private static final String APPLY = "Apply";
     private static final String CLEAR = "Clear";
     private static final String OPERATIONS = "Operations";
@@ -43,6 +45,7 @@ public class MainApplication extends Application {
         Button encrypt = new Button(ENCRYPT);
         Button decrypt = new Button(DECRYPT);
         Button bruteForce = new Button(BRUTE_FORCE_ANALYZER);
+        Button analyze = new Button(ANALYZE);
         Button key = new Button(APPLY);
         Button clear = new Button(CLEAR);
 
@@ -52,7 +55,7 @@ public class MainApplication extends Application {
         TextArea textArea = new TextArea();
         TextField textField = new TextField();
 
-        VBox vBox = new VBox(20, menuButton, encrypt, decrypt, bruteForce, textField, key, clear);
+        VBox vBox = new VBox(20, menuButton, encrypt, decrypt, bruteForce, analyze, textField, key, clear);
 
         HBox hBox = new HBox();
         hBox.getChildren().addAll(vBox, textArea);
@@ -138,6 +141,14 @@ public class MainApplication extends Application {
             if (result != null) {
                 textField.appendText(String.valueOf(result.getSecurityKey()));
             }
+        });
+
+        analyze.setOnAction(event -> {
+            Parameter parameter = new Parameter(inputFile.getAbsolutePath(), outputFile.getAbsolutePath());
+            AnalyzeCommand analyzeCommand = new AnalyzeCommand(parameter);
+            Result result = analyzeCommand.execute();
+            textArea.clear();
+            textArea.appendText(result.getMessage());
         });
     }
 
