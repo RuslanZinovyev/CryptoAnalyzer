@@ -15,10 +15,6 @@ public class WriteService {
         this.builder = builder;
     }
 
-    public File getOutputFile() {
-        return this.outputFile;
-    }
-
     public void writeFile() {
         if (!getFileExtension(outputFile).equals(".txt")) {
             throw new ApplicationException("Please specify the text file with .txt extension", ErrorCode.INVALID_FILE_EXTENSION);

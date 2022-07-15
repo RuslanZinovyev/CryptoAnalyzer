@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AlphabetUtil {
-    private AlphabetUtil() {}
-
     public static final Map<Character, Integer> encryptMap = new HashMap<>();
     public static final Map<Integer, Character> decryptMap = new HashMap<>();
+
+    private AlphabetUtil() {}
 
     static {
         encryptMap.put('а', 0);
