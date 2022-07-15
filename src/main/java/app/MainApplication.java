@@ -27,7 +27,7 @@ public class MainApplication extends Application {
     private static final String ENCRYPT = "Encrypt";
     private static final String DECRYPT = "Decrypt";
     private static final String BRUTE_FORCE_ANALYZER = "Brute Force key analyzer";
-    private static final String ANALYZE = "Analyze";
+    private static final String ANALYZE = "Analyze cypher";
     private static final String APPLY = "Apply";
     private static final String CLEAR = "Clear";
     private static final String OPERATIONS = "Operations";
