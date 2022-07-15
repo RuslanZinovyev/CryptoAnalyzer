@@ -11,6 +11,11 @@ public class Parameter {
         this.input = new File(input);
     }
 
+    public Parameter(String input, String output) {
+        this.input = new File(input);
+        this.output = new File(output);
+    }
+
     public Parameter(String input, String output, int securityKey) {
         this.input = new File(input);
         this.output = new File(output);
