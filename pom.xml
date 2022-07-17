@@ -13,6 +13,32 @@
         <maven.compiler.target>16</maven.compiler.target>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>javafx-base</groupId>
+            <artifactId>javafx-base</artifactId>
+            <scope>system</scope>
+            <version>18.0.1</version>
+            <systemPath>${project.basedir}/src/lib/javafx.base.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>javafx-graphics</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <scope>system</scope>
+            <version>18.0.1</version>
+            <systemPath>${project.basedir}/src/lib/javafx.graphics.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>javafx-controls</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <scope>system</scope>
+            <version>18.0.1</version>
+            <systemPath>${project.basedir}/src/lib/javafx.controls.jar</systemPath>
+        </dependency>
+
+
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
